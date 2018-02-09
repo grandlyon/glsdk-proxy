@@ -7,10 +7,9 @@ services:
 
 script:
   - docker build -t grandlyon/glsdk-proxy .
-
-after_success:
-  - export REPO=$DOCKER_USER/glsdk-proxy
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export REPO=$DOCKER_USERNAME/glsdk-proxy
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH; fi`
   - echo $REPO:$TAG:$TRAVIS_BUILD_NUMBER
   - docker build -t $REPO:$TRAVIS_BUILD_NUMBER .
   - docker tag $REPO:$TRAVIS_BUILD_NUMBER $REPO:$TAG
